@@ -23,10 +23,15 @@ run_competition.py
 This script is used to run part 2 of the competition, e.g. the live
 robot controlling.
 
-create_normalization_model.py
------------------------------
+collect_sensor_data.py
+----------------------
 
 This script collects data from the REST API to obtain an averaged
 sensor activation. From these the sensor normalization is computed.
 An alternative approach is to use the training data for this.
 Ideally, results of both approaches should match up.
+
+monitor_localization.py
+-----------------------
+
+This script displays and monitors the current robot position.
