@@ -29,7 +29,7 @@ def convert_to_cell(predict_vicon):
         predict_cell[1] = translate(predict_vicon[1], -15+7.575, 7.575, 15, 0)
         predict_cell = np.round(predict_cell)
 
-        return predict_cell
+        return predict_cell + 1
 
 
 class EventDisplay:

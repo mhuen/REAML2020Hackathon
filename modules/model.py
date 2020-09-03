@@ -9,7 +9,7 @@ from tqdm import tqdm_notebook as tqdm
 
 from egenerator.utils import basis_functions
 
-from .data import(
+from .data import (
     get_vel_and_acc,
     get_data_from_data_frame,
     append_vicon_coords,
@@ -234,7 +234,6 @@ class ModelWrapper:
         X[~np.isfinite(X)] = 0
         X_norm[~np.isfinite(X_norm)] = 0
 
-
         mean = np.nanmean(X_norm, axis=0)
         abs_mean = np.abs(mean)
         std = np.nanstd(X_norm, axis=0)
@@ -246,10 +245,11 @@ class ModelWrapper:
             print('Mean failed:')
             print(abs_mean[abs_mean > mean_tol])
 
-        if ((std > 1*std_tol).any() or (std < 1./ std_tol).any()):
+        if ((std > 1*std_tol).any() or (std < 1. / std_tol).any()):
             passed_test = False
 
             mask = np.logical_or(std > 1*std_tol, std < 1./std_tol)
+            mask = np.logical_and(mask, std > 0.)
             print('Std failed:')
             print(std[mask])
 

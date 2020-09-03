@@ -29,7 +29,8 @@ WAYPOINTS = [w1, w6, w4, w7, w5]  # Team 1 waypoints
 # WAYPOINTS = [w8, w3, w5, w7, w6]  # Team 5 waypoints
 WAY_POINTS = np.array(WAYPOINTS)
 
-MODEL_FILE = 'data/models/model_test_0000'
+# MODEL_FILE = 'data/models/model_test_0000'
+MODEL_FILE = 'data/models/model_coords_0000'
 ###############################################################################
 ###############################################################################
 

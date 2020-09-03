@@ -37,6 +37,7 @@ if __name__ == '__main__':
         server=SERVER,
         allowed_secret=ALLOWED_SECRET,
     )
+    time.sleep(5)
 
     # create the robot controller
     robot = RobotController(
@@ -47,22 +48,26 @@ if __name__ == '__main__':
     count = 0
     while True:
         way_point = WAY_POINTS[count]
-        way_point_coords = vicon_coords[way_point[0], way_point[1]]
+        way_point_coords = vicon_coords[way_point[0]-1, way_point[1]-1]
 
         # get the robot position
         pos = robot.localize()
         relative_pos = way_point_coords - pos
-        print('way_point', way_point)
-        print('way_point_coords', way_point_coords)
-        print('pos', pos)
-        print('relative_pos', relative_pos)
-        print('robot.waypoint_feedback()', robot.waypoint_feedback())
+        print('')
+        print('New Step:')
+        print('\tway_point', way_point)
+        print('\tway_point_coords', way_point_coords)
+        print('\tpos', pos)
+        print('\trelative_pos', relative_pos)
+        print('\tfeedback()', robot.waypoint_feedback())
 
         # relative_pos = np.array([0, 0])
         # way_point = way_point.flatten()
 
         # # get the robot position from the latest data and the trained model
         # current_cell = robot.localize().flatten()
+        current_cell = robot.convert_to_cell(pos)
+        print('\tcurrent_cell', current_cell)
 
         # abs_distance = np.abs(way_point - current_cell)
 
@@ -78,6 +83,7 @@ if __name__ == '__main__':
         # elif current_cell[0] >= way_point[0] and current_cell[1] <= way_point[1] : # south-west quarter
         #     relative_pos[0] = -abs_distance[0]
         #     relative_pos[1] = -abs_distance[1]
+
         robot.go_to_relative(relative_pos[0], relative_pos[1])
 
         waypoint_feedback_count = robot.waypoint_feedback()

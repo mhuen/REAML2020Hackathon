@@ -93,13 +93,14 @@ class RobotController:
         t_offset = 2459067
 
         # get current time
-        current_time = pd.Timestamp(datetime.now()).to_julian_date() - t_offset
-
+        current_time = pd.Timestamp(datetime.now()).to_julian_date()
+        time.sleep(7)
         # Floor data is delayed, so make sure to catch up
         t, pos = self.localizer.localize()
-        while not t >= current_time:
-            t, pos = self.localizer.localize()
-            print('time:', current_time, t)
+        print('time:', current_time, t, t - current_time)
+        # while not t >= current_time:
+        #     t, pos = self.localizer.localize()
+        #     print('time:', current_time, t)
 
         return pos
 
@@ -138,7 +139,7 @@ class RobotController:
         predict_cell[1] = translate(predict_vicon[1], -15+7.575, 7.575, 15, 0)
         predict_cell = np.round(predict_cell)
 
-        return predict_cell
+        return predict_cell + 1
 
     def path_planner(self, goal):
         """

@@ -28,7 +28,8 @@ from modules.data import get_data_from_data_frame
               help='The frequency at which to save.')
 def main(out_base, save_frequency, size):
 
-    robot = RobotController(server=SERVER, allowed_secret=ALLOWED_SECRET)
+    robot = RobotController(
+        localizer=None, server=SERVER, allowed_secret=ALLOWED_SECRET)
 
     # create output directory if it does not exist
     out_dir = os.path.dirname(out_base.format(0))
