@@ -84,6 +84,13 @@ if __name__ == '__main__':
         #     relative_pos[0] = -abs_distance[0]
         #     relative_pos[1] = -abs_distance[1]
 
+        # make sure we actually move:
+        norm = np.hypot(relative_pos) / np.sqrt(2)
+        if norm < 0.1:
+            print('Detected too small step!')
+            print('Increasing relative position...')
+            relative_pos = relative_pos * (0.2 / norm)
+
         robot.go_to_relative(relative_pos[0], relative_pos[1])
 
         waypoint_feedback_count = robot.waypoint_feedback()

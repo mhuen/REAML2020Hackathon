@@ -82,10 +82,10 @@ class EventDisplay:
         colors = matplotlib.rcParams['axes.prop_cycle'].by_key()['color']
         for i in range(len(WAY_POINTS)):
             way_point = WAY_POINTS[i]
-            coords = vicon_coords[way_point[0], way_point[1]] - 0.5
+            coords = vicon_coords[way_point[0] - 1, way_point[1] - 1] - 0.5
             rect = matplotlib.patches.Rectangle(
                 coords, 1., 1., color=colors[i], alpha=0.3, zorder=-2,
-                label='Waypoint {}'.format(i),
+                label='Waypoint {}'.format(i+1),
             )
             self.ax.add_patch(rect)
 
