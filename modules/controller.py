@@ -4,7 +4,8 @@ for the TU Dortmund summer-school-2020 Hackathon.
 """
 from __future__ import print_function, division
 
-from datetime import datetime
+import sys
+from datetime import datetime, timezone
 import requests
 import json
 import time
@@ -76,7 +77,6 @@ class RobotController:
         by the robot.
         """
         msg = requests.get(self.url_waypoints)
-        print('msg', msg.json())
         return msg.json()['waypoints_reached']
 
     def localize(self):
@@ -93,21 +93,23 @@ class RobotController:
         t_offset = 2459067
 
         # get current time
-        current_time = pd.Timestamp(datetime.now()).to_julian_date()
-        time.sleep(7)
+        current_time = pd.Timestamp(
+            datetime.now(timezone.utc)).to_julian_date() - t_offset
+
+        # convert to seconds
+        current_time *= 24 * 60 * 60
+
         # Floor data is delayed, so make sure to catch up
         t, pos = self.localizer.localize()
-        print('time:', current_time, t, t - current_time)
-        # while not t >= current_time:
-        #     t, pos = self.localizer.localize()
-        #     print('time:', current_time, t)
+        print('time:', t - current_time)
+        print('Localizing: waiting to catch up time delay...', end='')
+        sys.stdout.flush()
+        while not t >= current_time:
+            t, pos = self.localizer.localize()
+            time.sleep(0.5)
+        print('Caught up!')
 
         return pos
-
-        # # convert the position to a cell number
-        # predict_cell = self.convert_to_cell(predict_vicon)
-
-        # return predict_cell
 
     def get_current_data_frame(self):
         """Get Current sensor values as a pandas dataframe

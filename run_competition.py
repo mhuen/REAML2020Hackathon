@@ -14,7 +14,7 @@ specified for each team.
 All robot frames specified in this code and the whole competition are according
 to ROS (robot operating system) standards [for more info check ROS REP 105]
 """
-
+from __future__ import print_function
 import tensorflow as tf
 import requests
 import json
@@ -37,7 +37,7 @@ if __name__ == '__main__':
         server=SERVER,
         allowed_secret=ALLOWED_SECRET,
     )
-    time.sleep(5)
+    time.sleep(15)
 
     # create the robot controller
     robot = RobotController(
@@ -53,21 +53,22 @@ if __name__ == '__main__':
         # get the robot position
         pos = robot.localize()
         relative_pos = way_point_coords - pos
+        current_cell = robot.convert_to_cell(pos)
         print('')
         print('New Step:')
-        print('\tway_point', way_point)
-        print('\tway_point_coords', way_point_coords)
-        print('\tpos', pos)
-        print('\trelative_pos', relative_pos)
-        print('\tfeedback()', robot.waypoint_feedback())
+        print('\tTarget Waypoint:', robot.waypoint_feedback())
+        print('\tTarget Cell:', way_point)
+        print('\tTarget Coordinates:', way_point_coords)
+        print('\tCurrent Coordinates:', pos)
+        print('\tCurrent Cell:', current_cell)
+        print('\tRelative Difference:', relative_pos)
 
         # relative_pos = np.array([0, 0])
         # way_point = way_point.flatten()
 
         # # get the robot position from the latest data and the trained model
         # current_cell = robot.localize().flatten()
-        current_cell = robot.convert_to_cell(pos)
-        print('\tcurrent_cell', current_cell)
+        # current_cell = robot.convert_to_cell(pos)
 
         # abs_distance = np.abs(way_point - current_cell)
 
@@ -85,7 +86,7 @@ if __name__ == '__main__':
         #     relative_pos[1] = -abs_distance[1]
 
         # make sure we actually move:
-        norm = np.hypot(relative_pos) / np.sqrt(2)
+        norm = np.sqrt(relative_pos[0]**2 + relative_pos[1]**2)
         if norm < 0.1:
             print('Detected too small step!')
             print('Increasing relative position...')
