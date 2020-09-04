@@ -1,9 +1,11 @@
 '''
 Plotting functions using matplotlib
 '''
+from datetime import datetime, timezone
 import matplotlib
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
 
 from .settings import vicon_coords, WAY_POINTS
 
@@ -104,6 +106,16 @@ class EventDisplay:
 
         cell = convert_to_cell(y_pred[0])
 
+        # time offset used in data class
+        t_offset = 2459067
+
+        # get current time
+        current_time = pd.Timestamp(
+            datetime.now(timezone.utc)).to_julian_date() - t_offset
+
+        # convert to seconds
+        current_time *= 24 * 60 * 60
+
         # update points
         self.points.pop(0)
         self.points.append(y_pred)
@@ -111,6 +123,7 @@ class EventDisplay:
             scat.set_offsets(point)
             scat.changed()
         self.title.set_text(
-            'Time: {:3.3f} | Position {:3.3f} {:3.3f} | Cell {} {}'.format(
-                t, y_pred[0, 0], y_pred[0, 1], cell[0], cell[1]))
+            'Time: {:3.3f}s | Position {:3.3f}m {:3.3f}m | Cell {} {}'.format(
+                t - current_time, y_pred[0, 0], y_pred[0, 1],
+                cell[0], cell[1]))
         self.update()

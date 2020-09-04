@@ -87,10 +87,10 @@ if __name__ == '__main__':
 
         # make sure we actually move:
         norm = np.sqrt(relative_pos[0]**2 + relative_pos[1]**2)
-        if norm < 0.1:
+        if norm < 0.3:
             print('Detected too small step!')
             print('Increasing relative position...')
-            relative_pos = relative_pos * (0.2 / norm)
+            relative_pos = relative_pos * (0.3 / norm)
 
         robot.go_to_relative(relative_pos[0], relative_pos[1])
 
