@@ -35,3 +35,4 @@ monitor_localization.py
 -----------------------
 
 This script displays and monitors the current robot position.
+![An example screenshot of the monitoring script.](https://github.com/mhuen/REAML2020Hackathon/blob/master/example_view.png?raw=true)
